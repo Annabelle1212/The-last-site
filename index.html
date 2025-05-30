@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Last Site</title>
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Creepster', cursive;
+      background: url('https://images.unsplash.com/photo-1503416997304-7f8bf166c121?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+      background-size: cover;
+      color: #f0f0f0;
+      text-align: center;
+      padding: 40px;
+      backdrop-filter: brightness(0.3);
+      cursor: url('https://cur.cursors-4u.net/symbols/sym-1/sym61.cur'), auto;
+    }
+    h1 {
+      font-size: 4rem;
+      color: crimson;
+      text-shadow: 2px 2px 20px black;
+    }
+    p, label {
+      font-size: 1.5rem;
+      max-width: 700px;
+      margin: auto;
+      text-shadow: 1px 1px 10px black;
+    }
+    #timer {
+      font-size: 3rem;
+      color: #ff2222;
+      margin-top: 30px;
+      text-shadow: 1px 1px 8px black;
+    }
+    .glitch {
+      animation: glitch 1s infinite;
+    }
+    @keyframes glitch {
+      0% { text-shadow: 2px 2px red; }
+      25% { text-shadow: -2px -2px blue; }
+      50% { text-shadow: 2px -2px green; }
+      75% { text-shadow: -2px 2px purple; }
+      100% { text-shadow: 2px 2px red; }
+    }
+    #puzzle, #inputSection {
+      margin-top: 40px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      font-size: 1.2rem;
+      font-family: 'Creepster', cursive;
+      border: none;
+      outline: none;
+      background-color: #111;
+      color: crimson;
+      border-bottom: 2px solid crimson;
+      width: 100px;
+      text-align: center;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-family: 'Creepster', cursive;
+      background-color: crimson;
+      color: #fff;
+      border: none;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    #message {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      color: red;
+    }
+    footer {
+      margin-top: 100px;
+      font-size: 1rem;
+      color: #aaa;
+      border-top: 1px solid #444;
+      padding-top: 20px;
+    }
+    .whisper {
+      position: fixed;
+      font-size: 1.2rem;
+      color: #f0f0f0;
+      text-shadow: 0 0 10px red;
+      pointer-events: none;
+      animation: fadeWhisper 5s ease-out forwards;
+    }
+    @keyframes fadeWhisper {
+      0% { opacity: 0; transform: scale(0.5); }
+      10% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(2); }
+    }
+  </style>
+</head>
+<body>
+  <audio id="bgm" src="https://cdn.pixabay.com/download/audio/2022/03/26/audio_0058f4f417.mp3?filename=dark-horror-suspense-111625.mp3" autoplay loop></audio>
+  <audio id="whisper" src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_2c07c0f50c.mp3" preload="auto"></audio>
+
+  <h1 class="glitch">The Last Site</h1>
+  <p>You’ve entered the cursed zone. This site traps all who visit. Find the code… or be claimed by the spirit in <span id="timer">12:00</span>.</p>
+
+  <div id="puzzle">
+    <p><em>They come in silence, born from night,<br>
+    First, how many souls were stolen in fright?<br>
+    Then, count the screams in the cursed well,<br>
+    Add how many times the mirror fell.<br>
+    And lastly, the hour the shadow first moved.</em></p>
+    <p style="font-size: 1rem; color: #ccc;">(Hints: 13 souls, 4 screams, 3 mirror breaks, 3 a.m. shadow)</p>
+  </div>
+
+  <div id="inputSection">
+    <label for="code">Enter the code:</label><br>
+    <input type="text" id="code" maxlength="4" /><br>
+    <button onclick="checkCode()">Unlock</button>
+    <div id="message"></div>
+  </div>
+
+  <footer>
+    <p>© 2025 The Last Site | <a href="#">About Us</a> | <a href="#">Contact</a> | <a href="#">Terms</a> | <a href="#">Privacy</a></p>
+  </footer>
+
+  <script>
+    let seconds = 720;
+    const timerEl = document.getElementById("timer");
+    const whisperSound = document.getElementById("whisper");
+    let wrongAttempts = 0;
+
+    function updateTimer() {
+      const mins = String(Math.floor(seconds / 60)).padStart(2, '0');
+      const secs = String(seconds % 60).padStart(2, '0');
+      timerEl.textContent = \`\${mins}:\${secs}\`;
+      if (seconds > 0) {
+        seconds--;
+      } else {
+        document.body.innerHTML = "<h1 class='glitch'>💀 JUMP SCARE! 💀</h1><p>The spirit has possessed you...</p>";
+        document.body.style.background = "black";
+        new Audio('https://cdn.pixabay.com/download/audio/2022/03/15/audio_ba634a3ad3.mp3?filename=horror-hit-106273.mp3').play();
+      }
+    }
+
+    function checkCode() {
+      const userCode = document.getElementById("code").value;
+      const message = document.getElementById("message");
+      if (userCode === "1343") {
+        document.body.innerHTML = "<h1 class='glitch'>You Escaped... But Not Forgotten</h1><p>The spirits whisper your name as you flee...</p>";
+      } else {
+        wrongAttempts++;
+        message.textContent = "The spirits are closer now...";
+        if (wrongAttempts >= 3) {
+          document.body.innerHTML = "<h1 class='glitch'>💀 JUMP SCARE! 💀</h1><p>The spirit has possessed you...</p>";
+          document.body.style.background = "black";
+          new Audio('https://cdn.pixabay.com/download/audio/2022/03/15/audio_ba634a3ad3.mp3?filename=horror-hit-106273.mp3').play();
+        }
+      }
+    }
+
+    function spawnWhisper() {
+      const whisper = document.createElement("div");
+      whisper.className = "whisper";
+      whisper.textContent = "whisper... whisper...";
+      whisper.style.left = Math.random() * window.innerWidth + "px";
+      whisper.style.top = Math.random() * window.innerHeight + "px";
+      document.body.appendChild(whisper);
+      whisperSound.play();
+      setTimeout(() => whisper.remove(), 5000);
+    }
+
+    setInterval(updateTimer, 1000);
+    setInterval(spawnWhisper, 15000); // every 15 seconds
+  </script>
+</body>
+</html>
